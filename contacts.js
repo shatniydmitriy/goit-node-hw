@@ -7,31 +7,26 @@ const contactsPath = path.join(__dirname, 'db', 'contacts.json');
 
 
 const listContacts = async () => {
-    try {
+
         const data = await fs.readFile(contactsPath);
         return JSON.parse(data);
-    } catch (err) {
-        console.log(err)
-    }
+    
   
     
 }
 
 const getContactById = async (id) => {
-    try {
+    
         const contacts = await listContacts();
     const result = contacts.find(item => item.id === id);
     return result || null;
 
-    } catch (err) {
-        console.log(err)
-    }
 
     
 }
 
 const addContact = async ({ name, email, phone }) => {
-    try {
+    
         const contacts = await listContacts();
         const newContact = {
             id: nanoid(),
@@ -43,15 +38,12 @@ const addContact = async ({ name, email, phone }) => {
     await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
     return newContact;
 
-    } catch (err) {
-        console.log(err)
-    }
        
   
 }
 
 const removeContact = async (id) => {
-    try {
+    
         const contacts = await listContacts();
         const index = contacts.findIndex(item => item.id === id);
         if(index === -1){
@@ -60,12 +52,17 @@ const removeContact = async (id) => {
     const [result] = contacts.splice(index, 1);
     await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
     return result;
-
-    } catch (err) {
-        console.log(err)
-    }
     
 }
+function asyncHandler(callback) {
+    try {
+        return callback
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+asyncHandler(file.display())
 
 
 
